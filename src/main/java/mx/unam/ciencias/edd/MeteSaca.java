@@ -46,9 +46,12 @@ public abstract class MeteSaca<T> {
         if(esVacia()){
             throw new NoSuchElementException("Esta estructura esta vacia");
         }
-        Nodo retorno = cabeza;
+        T retorno = cabeza.elemento;
+        if(cabeza.siguiente == null){
+            rabo = null;
+        }
         cabeza = cabeza.siguiente;
-        return retorno.elemento;
+        return retorno;
     }
 
     /**
