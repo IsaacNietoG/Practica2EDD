@@ -28,7 +28,7 @@ public class Lista<T> implements Coleccion<T> {
 
         /* Construye un nodo con un elemento. */
         private Nodo(T elemento) {
-            // Aquí va su código.
+            this.elemento = elemento;
         }
     }
 
@@ -120,7 +120,7 @@ public class Lista<T> implements Coleccion<T> {
      *         otro caso.
      */
     @Override public boolean esVacia() {
-        return (cabeza == null && rabo == null);
+        return (cabeza == null);
     }
 
     /**
@@ -475,7 +475,79 @@ public class Lista<T> implements Coleccion<T> {
      * @return una copia de la lista, pero ordenada.
      */
     public Lista<T> mergeSort(Comparator<T> comparador) {
-        // Aquí va su código.
+        return mergeSortRecursivo(this, comparador);
+    }
+
+    public Lista<T> mergeSortRecursivo(Lista<T> lista, Comparator<T> comparador){
+        if (lista.longitud == 0 || lista.longitud == 1)
+            return lista;
+        int longitud1=0;
+        int longitud2=0;
+        if (lista.longitud % 2 != 0){
+            longitud1 = lista.longitud - 1 / 2;
+            longitud2 = (lista.longitud - 1 / 2) + 1;
+        }
+        Lista<T> lista1 = copiarRango(0, longitud1);
+        Lista<T> lista2 = copiarRango(longitud1, longitud2);
+        lista1 = mergeSortRecursivo(lista1, comparador);
+        lista2 = mergeSortRecursivo(lista2, comparador);
+        return mezcla(lista1, lista2, comparador);
+
+    }
+
+    /**
+       Regresa una lista con los elementos que se encuentran entre el rango de ini y fini
+
+       @param ini el inicio del rango que queremos copiar
+              fini el final del rango que queremos copiar
+
+       @return en notacion de pastel, Lista[ini,fini]
+     */
+    public Lista<T> copiarRango(int ini, int fini){
+        Iterador copiador = new Iterador();
+        Lista<T> resultado = new Lista<>();
+        //Colocamos el copiador en la posicion inicial
+        for (int i = 0; i < ini; i++){
+            copiador.next();
+        }
+
+        for(int i = 0; i<fini; i++){
+            resultado.agrega(copiador.next());
+        }
+
+        return resultado;
+    }
+
+    public Lista<T> mezcla(Lista<T> a, Lista<T> b, Comparator<T> comparador){
+        IteradorLista<T> iteradorA = a.iteradorLista();
+        IteradorLista<T> iteradorB = b.iteradorLista();
+        Lista<T> resultado = new Lista<>();
+        while(iteradorA.hasNext() && iteradorB.hasNext()){
+            //No se si podía modificar el IteradorLista para crear un método que me deje "mirar"
+            //el siguiente elemento sin mover el Iterador, pero por si las dudas no lo hice,
+            //y en su lugar, manda un next() a ambos Iteradores y luego regresa el iterador correspondiente en cada caso xd
+            T elementoA = iteradorA.next();
+            T elementoB = iteradorB.next();
+            if(comparador.compare(elementoA, elementoB)>= 0){
+                resultado.agrega(elementoA);
+                iteradorB.previous();
+            }else{
+                resultado.agrega(elementoB);
+                iteradorA.previous();
+            }
+        }
+        if(!iteradorA.hasNext()){
+            while(iteradorB.hasNext()){
+                resultado.agrega(iteradorB.next());
+            }
+        }
+        if(!iteradorB.hasNext()){
+            while(iteradorA.hasNext()){
+                resultado.agrega(iteradorA.next());
+            }
+        }
+
+        return resultado;
     }
 
     /**
@@ -500,7 +572,12 @@ public class Lista<T> implements Coleccion<T> {
      *         <code>false</code> en otro caso.
      */
     public boolean busquedaLineal(T elemento, Comparator<T> comparador) {
-        // Aquí va su código.
+        for(T nodoCurrent : this){
+            if(comparador.compare(nodoCurrent, elemento)==0){
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
