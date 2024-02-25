@@ -48,7 +48,9 @@ public abstract class MeteSaca<T> {
         }
         T retorno = cabeza.elemento;
         if(cabeza.siguiente == null){
+            cabeza = null;
             rabo = null;
+            return retorno;
         }
         cabeza = cabeza.siguiente;
         return retorno;
@@ -87,8 +89,8 @@ public abstract class MeteSaca<T> {
         if (object == null || getClass() != object.getClass())
             return false;
         @SuppressWarnings("unchecked") MeteSaca<T> m = (MeteSaca<T>)object;
-        nodoInt = this.cabeza;
-        nodoExt = m.cabeza;
+        Nodo nodoInt = this.cabeza;
+        Nodo nodoExt = m.cabeza;
         while(nodoInt.siguiente != null || nodoExt.siguiente != null){
             // Cuando una de las dos estructuras se puede seguir recorriendo y la otra no, entonces son de distinta longitud asi que
             // cortocircuitamos a que no son iguales.
