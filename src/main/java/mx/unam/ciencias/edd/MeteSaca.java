@@ -89,17 +89,21 @@ public abstract class MeteSaca<T> {
         if (object == null || getClass() != object.getClass())
             return false;
         @SuppressWarnings("unchecked") MeteSaca<T> m = (MeteSaca<T>)object;
+        if(m.esVacia() && this.esVacia())
+            return false;
         Nodo nodoInt = this.cabeza;
         Nodo nodoExt = m.cabeza;
-        while(nodoInt.siguiente != null || nodoExt.siguiente != null){
-            // Cuando una de las dos estructuras se puede seguir recorriendo y la otra no, entonces son de distinta longitud asi que
-            // cortocircuitamos a que no son iguales.
-            if((nodoInt.siguiente == null && nodoExt.siguiente != null) || (nodoExt.siguiente == null && nodoInt.siguiente != null)){
-                return false;
-            }
+        while(nodoInt != null || nodoExt != null){
             // Cuando un elemento no es igual a su equivalente en la otra estructura, cortocircuitamos a que las structs no son
             // iguales
             if(!nodoInt.elemento.equals(nodoExt.elemento)){
+                return false;
+            }
+            // Cuando una de las dos estructuras se puede seguir recorriendo y la otra no,
+            // entonces son de distinta longitud asi que
+            // cortocircuitamos a que no son iguales.
+            if ((nodoInt.siguiente == null && nodoExt.siguiente != null)
+                    || (nodoExt.siguiente == null && nodoInt.siguiente != null)) {
                 return false;
             }
             nodoInt = nodoInt.siguiente;

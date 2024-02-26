@@ -10,9 +10,12 @@ public class Pila<T> extends MeteSaca<T> {
      * @return una representación en cadena de la pila.
      */
     @Override public String toString() {
-        Nodo actual = cabeza;
         String resultado = "";
-        while(actual.siguiente != null){
+        if(esVacia()){
+            return resultado;
+        }
+        Nodo actual = cabeza;
+        while(actual != null){
             resultado += actual.elemento + "\n";
             actual = actual.siguiente;
         }

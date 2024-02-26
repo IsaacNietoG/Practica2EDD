@@ -12,8 +12,8 @@ public class Cola<T> extends MeteSaca<T> {
     @Override public String toString() {
         String retorno = "";
         Nodo actual = cabeza;
-        while(actual.siguiente != null){
-            retorno = actual.elemento + retorno;
+        while(actual != null){
+            retorno += actual.elemento + " ";
             actual = actual.siguiente;
         }
         return retorno;
