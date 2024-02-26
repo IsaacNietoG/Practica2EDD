@@ -115,7 +115,8 @@ public class Arreglos {
             return medio;
         if(comparador.compare(elemento, arreglo[medio])<0)
             return busquedaBinariaRecursiva(arreglo, elemento, ini, medio-1, comparador);
-        return busquedaBinariaRecursiva(arreglo, elemento, medio+1, fini, comparador);
+        else
+            return busquedaBinariaRecursiva(arreglo, elemento, medio+1, fini, comparador);
     }
 
     /**
