@@ -490,12 +490,16 @@ public class Lista<T> implements Coleccion<T> {
         if (lista.longitud % 2 != 0){
             longitud1 = lista.longitud - 1 / 2;
         }else{
-            longitud1 = lista.longitud / 2;
+            longitud1  = lista.longitud / 2;
         }
-        Lista<T> lista1 = copiarRango(0, longitud1-1);
-        Lista<T> lista2 = copiarRango(longitud1, lista.longitud-1);
-        lista1 = mergeSortRecursivo(lista1, comparador);
-        lista2 = mergeSortRecursivo(lista2, comparador);
+        Lista<T> lista1 = lista.copiarRango(0, longitud1);
+        Lista<T> lista2 = lista.copiarRango(longitud1, lista.longitud-1);
+        System.out.println("Lista izquierda: "+ 0 + " " + longitud1); //DEBUG
+        System.out.println(lista1.toString()); //DEBUG
+        System.out.println("Lista derecha: " + longitud1 + " " + (lista.longitud-1)); //DEBUG
+        System.out.println(lista2.toString()); //DEBUG
+        lista1 = lista.mergeSortRecursivo(lista1, comparador);
+        lista2 = lista.mergeSortRecursivo(lista2, comparador);
         return mezcla(lista1, lista2, comparador);
 
     }
@@ -517,6 +521,7 @@ public class Lista<T> implements Coleccion<T> {
         }
 
         for(int i = 0; i<fini; i++){
+            if(copiador.hasNext())
             resultado.agrega(copiador.next());
         }
 
