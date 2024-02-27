@@ -87,6 +87,11 @@ public class Lista<T> implements Coleccion<T> {
             siguiente = null;
             anterior = rabo;
         }
+
+        /* Nos retorna el elemento del nodo siguiente, sin mover el iterador */
+        public T peek(){
+            return siguiente.elemento;
+        }
     }
 
     /* Primer elemento de la lista. */
@@ -482,13 +487,13 @@ public class Lista<T> implements Coleccion<T> {
         if (lista.longitud == 0 || lista.longitud == 1)
             return lista;
         int longitud1=0;
-        int longitud2=0;
         if (lista.longitud % 2 != 0){
             longitud1 = lista.longitud - 1 / 2;
-            longitud2 = (lista.longitud - 1 / 2) + 1;
+        }else{
+            longitud1 = lista.longitud / 2;
         }
-        Lista<T> lista1 = copiarRango(0, longitud1);
-        Lista<T> lista2 = copiarRango(longitud1, longitud2);
+        Lista<T> lista1 = copiarRango(0, longitud1-1);
+        Lista<T> lista2 = copiarRango(longitud1, lista.longitud-1);
         lista1 = mergeSortRecursivo(lista1, comparador);
         lista2 = mergeSortRecursivo(lista2, comparador);
         return mezcla(lista1, lista2, comparador);
@@ -504,7 +509,7 @@ public class Lista<T> implements Coleccion<T> {
        @return en notacion de pastel, Lista[ini,fini]
      */
     public Lista<T> copiarRango(int ini, int fini){
-        Iterador copiador = new Iterador();
+        IteradorLista<T> copiador = this.iteradorLista();
         Lista<T> resultado = new Lista<>();
         //Colocamos el copiador en la posicion inicial
         for (int i = 0; i < ini; i++){
@@ -519,30 +524,27 @@ public class Lista<T> implements Coleccion<T> {
     }
 
     public Lista<T> mezcla(Lista<T> a, Lista<T> b, Comparator<T> comparador){
-        IteradorLista<T> iteradorA = a.iteradorLista();
-        IteradorLista<T> iteradorB = b.iteradorLista();
+        Iterador iteradorA = (Iterador)a.iteradorLista();
+        Iterador iteradorB = (Iterador)b.iteradorLista();
         Lista<T> resultado = new Lista<>();
         while(iteradorA.hasNext() && iteradorB.hasNext()){
-            //No se si podía modificar el IteradorLista para crear un método que me deje "mirar"
-            //el siguiente elemento sin mover el Iterador, pero por si las dudas no lo hice,
-            //y en su lugar, manda un next() a ambos Iteradores y luego regresa el iterador correspondiente en cada caso xd
-            T elementoA = iteradorA.next();
-            T elementoB = iteradorB.next();
+            T elementoA = iteradorA.peek();
+            T elementoB = iteradorB.peek();
             if(comparador.compare(elementoA, elementoB)>= 0){
                 resultado.agrega(elementoA);
-                iteradorB.previous();
+                iteradorA.next();
             }else{
                 resultado.agrega(elementoB);
-                iteradorA.previous();
+                iteradorB.next();
             }
         }
-        if(!iteradorA.hasNext()){
-            while(iteradorB.hasNext()){
+        if (!iteradorA.hasNext()) {
+            while (iteradorB.hasNext()) {
                 resultado.agrega(iteradorB.next());
             }
         }
-        if(!iteradorB.hasNext()){
-            while(iteradorA.hasNext()){
+        if (!iteradorB.hasNext()) {
+            while (iteradorA.hasNext()) {
                 resultado.agrega(iteradorA.next());
             }
         }
@@ -575,6 +577,9 @@ public class Lista<T> implements Coleccion<T> {
         for(T nodoCurrent : this){
             if(comparador.compare(nodoCurrent, elemento)==0){
                 return true;
+            }
+            if(comparador.compare(nodoCurrent, elemento)>0){
+                return false;
             }
         }
         return false;

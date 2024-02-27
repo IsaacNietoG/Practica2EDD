@@ -13,7 +13,7 @@ public class Cola<T> extends MeteSaca<T> {
         String retorno = "";
         Nodo actual = cabeza;
         while(actual != null){
-            retorno += actual.elemento + " ";
+            retorno += actual.elemento + ",";
             actual = actual.siguiente;
         }
         return retorno;

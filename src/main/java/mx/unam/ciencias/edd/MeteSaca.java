@@ -90,7 +90,10 @@ public abstract class MeteSaca<T> {
             return false;
         @SuppressWarnings("unchecked") MeteSaca<T> m = (MeteSaca<T>)object;
         if(m.esVacia() && this.esVacia())
+            return true;
+        if((m.esVacia() && !this.esVacia()) || (this.esVacia() && !m.esVacia())){
             return false;
+        }
         Nodo nodoInt = this.cabeza;
         Nodo nodoExt = m.cabeza;
         while(nodoInt != null || nodoExt != null){
@@ -106,6 +109,7 @@ public abstract class MeteSaca<T> {
                     || (nodoExt.siguiente == null && nodoInt.siguiente != null)) {
                 return false;
             }
+            //Iteramos al siguiente
             nodoInt = nodoInt.siguiente;
             nodoExt = nodoExt.siguiente;
         }

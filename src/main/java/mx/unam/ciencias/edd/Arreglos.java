@@ -106,17 +106,23 @@ public class Arreglos {
      */
     public static <T> int
     busquedaBinaria(T[] arreglo, T elemento, Comparator<T> comparador) {
-        return busquedaBinariaRecursiva(arreglo, elemento, 0, arreglo.length, comparador);
+        return busquedaBinariaRecursiva(arreglo, elemento, 0, arreglo.length-1, comparador);
     }
 
     public static <T> int busquedaBinariaRecursiva(T[] arreglo, T elemento, int ini, int fini, Comparator<T> comparador){
-        int medio = arreglo.length/2;
+        if(fini<ini){
+            return -1;
+        }
+        int medio = ((fini-ini)/2) + ini;
         if(comparador.compare(elemento, arreglo[medio])==0)
             return medio;
-        if(comparador.compare(elemento, arreglo[medio])<0)
-            return busquedaBinariaRecursiva(arreglo, elemento, ini, medio-1, comparador);
-        else
-            return busquedaBinariaRecursiva(arreglo, elemento, medio+1, fini, comparador);
+        else if(comparador.compare(elemento, arreglo[medio])<0)
+            {
+                return busquedaBinariaRecursiva(arreglo, elemento, ini, medio - 1, comparador);
+            }
+            else{
+                return busquedaBinariaRecursiva(arreglo, elemento, medio + 1, fini, comparador);
+            }
     }
 
     /**
