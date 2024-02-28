@@ -480,13 +480,10 @@ public class Lista<T> implements Coleccion<T> {
      * @return una copia de la lista, pero ordenada.
      */
     public Lista<T> mergeSort(Comparator<T> comparador) {
-        System.out.println("Entrada");
-        System.out.println(this);
         return mergeSortRecursivo(this, comparador);
     }
 
     public Lista<T> mergeSortRecursivo(Lista<T> lista, Comparator<T> comparador){
-        System.out.println(lista);
         if (lista.longitud <= 1)
             return lista;
         int longitud1=0;
@@ -533,10 +530,6 @@ public class Lista<T> implements Coleccion<T> {
     }
 
     public Lista<T> mezcla(Lista<T> a, Lista<T> b, Comparator<T> comparador){
-        System.out.println("Lista A");
-        System.out.println(a);
-        System.out.println("Lista B");
-        System.out.println(b);
         Iterador iteradorA = (Iterador)a.iteradorLista();
         Iterador iteradorB = (Iterador)b.iteradorLista();
         Lista<T> resultado = new Lista<>();
@@ -557,8 +550,6 @@ public class Lista<T> implements Coleccion<T> {
         while (iteradorA.hasNext()) {
             resultado.agrega(iteradorA.next());
         }
-        System.out.println("Resultado");
-        System.out.println(resultado);
         return resultado;
     }
 
