@@ -480,27 +480,31 @@ public class Lista<T> implements Coleccion<T> {
      * @return una copia de la lista, pero ordenada.
      */
     public Lista<T> mergeSort(Comparator<T> comparador) {
+        System.out.println("Entrada");
+        System.out.println(this);
         return mergeSortRecursivo(this, comparador);
     }
 
     public Lista<T> mergeSortRecursivo(Lista<T> lista, Comparator<T> comparador){
-        if (lista.longitud == 0 || lista.longitud == 1)
+        System.out.println(lista);
+        if (lista.longitud <= 1)
             return lista;
         int longitud1=0;
         if (lista.longitud % 2 != 0){
-            longitud1 = lista.longitud - 1 / 2;
+            longitud1 = (lista.longitud / 2)+1;
         }else{
             longitud1  = lista.longitud / 2;
         }
-        Lista<T> lista1 = lista.copiarRango(0, longitud1);
-        Lista<T> lista2 = lista.copiarRango(longitud1, lista.longitud-1);
-        System.out.println("Lista izquierda: "+ 0 + " " + longitud1); //DEBUG
-        System.out.println(lista1.toString()); //DEBUG
-        System.out.println("Lista derecha: " + longitud1 + " " + (lista.longitud-1)); //DEBUG
-        System.out.println(lista2.toString()); //DEBUG
-        lista1 = lista.mergeSortRecursivo(lista1, comparador);
-        lista2 = lista.mergeSortRecursivo(lista2, comparador);
-        return mezcla(lista1, lista2, comparador);
+        Lista<T> lista1 = new Lista<>();
+        Lista<T> lista2 = new Lista<>();
+        IteradorLista<T> copiador = lista.iteradorLista();
+        for(int i=longitud1; i>0; i--){
+            lista1.agrega(copiador.next());
+        }
+        while(copiador.hasNext()){
+            lista2.agrega(copiador.next());
+        }
+        return mezcla(mergeSortRecursivo(lista1, comparador), mergeSortRecursivo(lista2, comparador), comparador);
 
     }
 
@@ -529,13 +533,17 @@ public class Lista<T> implements Coleccion<T> {
     }
 
     public Lista<T> mezcla(Lista<T> a, Lista<T> b, Comparator<T> comparador){
+        System.out.println("Lista A");
+        System.out.println(a);
+        System.out.println("Lista B");
+        System.out.println(b);
         Iterador iteradorA = (Iterador)a.iteradorLista();
         Iterador iteradorB = (Iterador)b.iteradorLista();
         Lista<T> resultado = new Lista<>();
         while(iteradorA.hasNext() && iteradorB.hasNext()){
             T elementoA = iteradorA.peek();
             T elementoB = iteradorB.peek();
-            if(comparador.compare(elementoA, elementoB)>= 0){
+            if(comparador.compare(elementoA, elementoB)<= 0){
                 resultado.agrega(elementoA);
                 iteradorA.next();
             }else{
@@ -543,17 +551,14 @@ public class Lista<T> implements Coleccion<T> {
                 iteradorB.next();
             }
         }
-        if (!iteradorA.hasNext()) {
-            while (iteradorB.hasNext()) {
-                resultado.agrega(iteradorB.next());
-            }
+        while (iteradorB.hasNext()) {
+            resultado.agrega(iteradorB.next());
         }
-        if (!iteradorB.hasNext()) {
-            while (iteradorA.hasNext()) {
-                resultado.agrega(iteradorA.next());
-            }
+        while (iteradorA.hasNext()) {
+            resultado.agrega(iteradorA.next());
         }
-
+        System.out.println("Resultado");
+        System.out.println(resultado);
         return resultado;
     }
 
